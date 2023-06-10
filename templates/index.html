@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    .table-container {
+      width: 300px;
+      height: 200px;
+      border: 1px solid #ccc;
+      padding: 10px;
+      margin-bottom: 10px;
+    }
+    .popup {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: #f1f1f1;
+      padding: 20px;
+      border: 1px solid #ccc;
+      z-index: 9999;
+    }
+    .hide {
+      display: none;
+    }
+  </style>
+  <script>
+    var initialTablePositions = {};
+
+    function allowDrop(event) {
+      event.preventDefault();
+    }
+
+    function drag(event) {
+      event.dataTransfer.setData("text/plain", event.target.id);
+    }
+
+    function drop(event) {
+      event.preventDefault();
+      var tableId = event.dataTransfer.getData("text/plain");
+      var table = document.getElementById(tableId);
+      event.target.appendChild(table);
+
+      // Show the pop-up message
+      var popup = document.getElementById("popup");
+      popup.classList.remove("hide");
+      setTimeout(function() {
+        popup.classList.add("hide");
+      }, 2000);
+    }
+
+    function resetTables() {
+      var tableContainers = document.querySelectorAll(".table-container");
+      var tables = document.querySelectorAll("table");
+
+      // Restore tables to their initial containers
+      tableContainers.forEach(function(container, index) {
+        var initialContainer = initialTablePositions[tables[index].id];
+        initialContainer.appendChild(tables[index]);
+      });
+    }
+
+    document.addEventListener("DOMContentLoaded", function() {
+      var tableContainers = document.querySelectorAll(".table-container");
+      var tables = document.querySelectorAll("table");
+
+      // Store initial table positions
+      tableContainers.forEach(function(container, index) {
+        initialTablePositions[tables[index].id] = container;
+      });
+    });
+  </script>
+</head>
+<body>
+  <div class="table-container" ondrop="drop(event)" ondragover="allowDrop(event)">
+    <table id="table1" draggable="true" ondragstart="drag(event)">
+      <caption>Table 1</caption>
+      <thead>
+        <tr>
+          <th>Team</th>
+          <th>India</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Virat,Rohith,Siraj,</td>
+          <td>Jadeja,Pujara,Shami</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="table-container" ondrop="drop(event)" ondragover="allowDrop(event)">
+    <table id="table2" draggable="true" ondragstart="drag(event)">
+      <caption>Table 2</caption>
+      <thead>
+        <tr>
+          <th>Team</th>
+          <th>Australia</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Cummins,Smith,Warner,</td>
+          <td>Marnus,Lyon,Boland</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="table-container" ondrop="drop(event)" ondragover="allowDrop(event)">
+    <table id="table3" draggable="true" ondragstart="drag(event)">
+      <caption>Table 3</caption>
+      <thead>
+        <tr>
+          <th>Team</th>
+          <th>Pakistan</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Babar,Rizwan,Shadab,</td>
+          <td>Shaheen,Hasan,Fakhar</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="table-container" ondrop="drop(event)" ondragover="allowDrop(event)">
+    <table id="table4" draggable="true" ondragstart="drag(event)">
+      <caption>Table 4</caption>
+      <thead>
+        <tr>
+          <th>Team</th>
+          <th>New Zealand</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Kane,Boult,Southee,</td>
+          <td>Latham,Abott,Ferguson</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="table-container" ondrop="drop(event)" ondragover="allowDrop(event)">
+    <table id="table5" draggable="true" ondragstart="drag(event)">
+      <caption>Table 5</caption>
+      <thead>
+        <tr>
+          <th>Team</th>
+          <th>England</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Stokes,Broad,Anderson,</td>
+          <td>Moeen,Wood,Alex</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <button onclick="resetTables()">Reset</button>
+
+  <div id="popup" class="popup hide">
+    Table interchanged successfully!
+  </div>
+</body>
+</html>
